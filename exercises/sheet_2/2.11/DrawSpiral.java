@@ -14,8 +14,8 @@ public class DrawSpiral extends Frame {
       g.setColor(oldColor);
       
       double t = 0;
-      while(t < Math.PI * rotations) {
-        int[] coords = archimedian(spacing, t); 
+      while(t < 2 * Math.PI * rotations) {
+        int[] coords = archimedean(spacing, t); 
         g.drawLine(150+ coords[0], 150+ coords[1], 150+ coords[0], 150+coords[1]);
         t+=step;
       }  
@@ -27,15 +27,22 @@ public class DrawSpiral extends Frame {
       if (adjustable == stepSlider) {
         step = val * DrawArea.STEP_RESOLUTION;
       } else if (adjustable == rotationsSlider) {
-        rotations = val;
+        rotations = val * DrawArea.ROTATIONS_RESOLUTION;
       } else if (adjustable == spacingSlider) {
         spacing = val * DrawArea.SPACING_RESOLUTION;
       }
+      logParams();
       repaint();
     }
 
+    public void logParams() {
+      System.out.println("Rotations: " + rotations);
+      System.out.println("Spacing: " + spacing);
+      System.out.println("Step: " + step);
+      System.out.println("");
+    }
 
-    public int[] archimedian(double a, double t) {
+    public int[] archimedean(double a, double t) {
       int[] retval = {(int) Math.floor(a *t * Math.cos(t)), (int) Math.floor(a * t* Math.sin(t))};
       return retval; 
     }
@@ -51,20 +58,21 @@ public class DrawSpiral extends Frame {
       step = DrawArea.DEFAULT_STEP;
     };
 
-    public int rotations;
+    public double rotations;
     public double spacing;
     public double step;
 
-    public static final int MAX_ROTATIONS = 15;
-    public static final int MIN_ROTATIONS = 1;
-    public static final int DEFAULT_ROTATIONS = 10;
+    public static final double MAX_ROTATIONS = 15.0;
+    public static final double MIN_ROTATIONS = 1.0;
+    public static final double DEFAULT_ROTATIONS = 10.0;
+    public static final double ROTATIONS_RESOLUTION = 0.1;
 
     public static final double MAX_SPACING = 20.0;
     public static final double MIN_SPACING = 0.0;
     public static final double DEFAULT_SPACING = 5.0;
     public static final double SPACING_RESOLUTION = 0.01;
 
-    public static final double MAX_STEP = 0.1;
+    public static final double MAX_STEP = 1.0;
     public static final double MIN_STEP = 0.001;
     public static final double STEP_RESOLUTION = 0.001;
     public static final double DEFAULT_STEP = 0.001; 
@@ -94,14 +102,18 @@ public class DrawSpiral extends Frame {
 
     drawing.spacingSlider = new Scrollbar(Scrollbar.HORIZONTAL, (int) (DrawArea.DEFAULT_SPACING / DrawArea.SPACING_RESOLUTION), 1,  (int) (DrawArea.MIN_SPACING / DrawArea.SPACING_RESOLUTION),  (int) (DrawArea.MAX_SPACING / DrawArea.SPACING_RESOLUTION));
 
-    drawing.stepSlider = new Scrollbar(Scrollbar.HORIZONTAL, (int) (DrawArea.DEFAULT_STEP / DrawArea.STEP_RESOLUTION), 1,  (int) (DrawArea.MIN_STEP / DrawArea.STEP_RESOLUTION),  (int) (DrawArea.MAX_SPACING / DrawArea.STEP_RESOLUTION));
+    drawing.stepSlider = new Scrollbar(Scrollbar.HORIZONTAL, (int) (DrawArea.DEFAULT_STEP / DrawArea.STEP_RESOLUTION), 1,  (int) (DrawArea.MIN_STEP / DrawArea.STEP_RESOLUTION),  (int) (DrawArea.MAX_STEP / DrawArea.STEP_RESOLUTION));
 
-    drawing.rotationsSlider = new Scrollbar(Scrollbar.HORIZONTAL, DrawArea.DEFAULT_ROTATIONS, 1, DrawArea.MIN_ROTATIONS,  DrawArea.MAX_ROTATIONS);
+    drawing.rotationsSlider = new Scrollbar(Scrollbar.HORIZONTAL, (int) (DrawArea.DEFAULT_ROTATIONS / DrawArea.ROTATIONS_RESOLUTION), 1, (int) (DrawArea.MIN_ROTATIONS / DrawArea.ROTATIONS_RESOLUTION),  (int) (DrawArea.MAX_ROTATIONS / DrawArea.ROTATIONS_RESOLUTION));
     
+    Panel controlPanel = new Panel();
+    controlPanel.setLayout(new GridLayout(3,1));
+    buttonPanel.setLayout(new BorderLayout());
     buttonPanel.add("South", quitButton);
-    buttonPanel.add("Center", drawing.spacingSlider);
-    buttonPanel.add("Center", drawing.rotationsSlider);
-    buttonPanel.add("Center",  drawing.stepSlider);
+    controlPanel.add(drawing.spacingSlider);
+    controlPanel.add(drawing.rotationsSlider);
+    controlPanel.add(drawing.stepSlider);
+    buttonPanel.add("Center", controlPanel);
     frame.setLayout(new BorderLayout());
     frame.add("Center", drawing);
     frame.add("South", buttonPanel);
