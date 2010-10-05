@@ -1,8 +1,20 @@
 import java.awt.*;
 import java.awt.event.*;
+/**
+ * <dl>
+ * <dt>Purpose:
+ * <dd>Spiral-drawing program.
+ *
+ * <dt>Description:
+ * <dd>Draws a spiral, based on various parameters passed in through a UI.
+ * </dl>
+ *
+ * @author  Tim Cowlishaw
+ * @version $Date: 2010/10/305 17:04:28 $
+ * 
+ */
 
 public class DrawSpiral extends Frame {
-
 
   protected static class DrawArea extends Panel implements AdjustmentListener {
         
