@@ -5,10 +5,10 @@ import java.util.Random;
 /**
  * <dl>
  * <dt>Purpose:
- * <dd>Spiral-drawing program.
+ * <dd>Brownian Motion Simulator.
  *
  * <dt>Description:
- * <dd>Draws a spiral, based on various parameters passed in through a UI.
+ * <dd>Simulates brownian motion of a single particle, based on various parameters passed in through a UI.
  * </dl>
  *
  * @author  Tim Cowlishaw
